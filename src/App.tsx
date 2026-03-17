@@ -1,9 +1,12 @@
-import Placeholder from './components/Placeholder'
+// import Placeholder from './components/Placeholder'
+import { Button } from './components/ui/button'
 
 function App() {
 
   return (
-    <Placeholder />
+    <div>
+      <Button>Hi</Button>
+    </div>
   )
 }
 

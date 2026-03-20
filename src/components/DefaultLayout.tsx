@@ -1,16 +1,15 @@
 import React from 'react'
 import Header from './Header'
+import Footer from './Footer'
 
 const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='bg-background min-h-screen flex flex-col'>
       <Header/>
-      <main>
+      <main className='grow px-4 py-6'>
         {children}
       </main>
-      <footer>
-        <p>&copy; 2023 My App. All rights reserved.</p>
-      </footer>
+      <Footer/>
     </div>
   )
 }

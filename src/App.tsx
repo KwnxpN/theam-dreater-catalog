@@ -1,11 +1,13 @@
-// import Placeholder from './components/Placeholder'
-import { Button } from './components/ui/button'
+import DefaultLayout from './components/DefaultLayout'
+import Hero from './pages/Hero'
 
 function App() {
 
   return (
     <div>
-      <Button>Hi</Button>
+      <DefaultLayout>
+        <Hero/>
+      </DefaultLayout>
     </div>
   )
 }

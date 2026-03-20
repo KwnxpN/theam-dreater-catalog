@@ -13,7 +13,7 @@ const Header = () => {
               <Leaf className="text-white" />
             </AvatarFallback>
           </Avatar>
-          <span className="font-bold text-2xl tracking-wide">TerraModern</span>
+          <span className="font-semibold text-2xl tracking-wide">TerraModern</span>
           <span className="font-medium text-secondary-foreground">Shop</span>
           <span className="font-medium text-secondary-foreground">
             Collections

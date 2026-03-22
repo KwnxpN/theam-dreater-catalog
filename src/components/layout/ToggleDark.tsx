@@ -24,7 +24,7 @@ const ToggleDark = () => {
   }, [isDark]);
 
   return (
-    <label className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm">
+    <label className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm">
       <Sun className={`h-4 w-4 transition-colors ${isDark ? "text-muted-foreground" : "text-primary"}`} />
       <Switch
         checked={isDark}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Package, Menu, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { NavLink } from 'react-router-dom';
+import ToggleDark from "./ToggleDark";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -29,42 +30,48 @@ const Header = () => {
 
   return (
     <header className="border-b border-muted shadow-md relative">
-      <div className="flex mx-auto justify-between md:justify-start md:gap-6 items-center px-4 py-4">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <Avatar size="lg">
-            <AvatarFallback className="bg-primary">
-              <Package className="text-white" />
-            </AvatarFallback>
-          </Avatar>
-          <span className="font-semibold text-2xl tracking-wide">TerraModern</span>
+      <div className="flex mx-auto justify-between items-center px-4 py-4">
+        <div className="flex items-center gap-6">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <Avatar size="lg">
+              <AvatarFallback className="bg-primary">
+                <Package className="text-white" />
+              </AvatarFallback>
+            </Avatar>
+            <span className="font-semibold text-2xl tracking-wide">Theam Dreater</span>
+          </div>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <NavLink to={link.path} key={link.path} className={desktopNavClass} end={link.path === "/"}>
+                {({ isActive }) => (
+                  <span className="relative inline-block cursor-pointer pb-1">
+                    {link.name}
+                    <span
+                      className={`absolute -bottom-0.5 left-0 h-0.5 w-full origin-left rounded-full bg-primary transition-transform duration-200
+                      ${isActive ? "scale-x-100" : "scale-x-0"}`}
+                    />
+                  </span>
+                )}
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <NavLink to={link.path} key={link.path} className={desktopNavClass} end={link.path === "/"}>
-              {({ isActive }) => (
-                <span className="relative inline-block cursor-pointer pb-1">
-                  {link.name}
-                  <span
-                    className={`absolute -bottom-0.5 left-0 h-0.5 w-full origin-left rounded-full bg-primary transition-transform duration-200
-                      ${isActive ? "scale-x-100" : "scale-x-0"}`}
-                  />
-                </span>
-              )}
-            </NavLink>
-          ))}
-        </nav>
+        <div className="flex items-center gap-4">
+          <ToggleDark />
 
-        {/* Hamburger Button (mobile only) */}
-        <button
-          className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
-          onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          {/* Hamburger Button (mobile only) */}
+          <button
+            className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}

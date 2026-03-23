@@ -9,13 +9,16 @@ import {
 import { Search } from "lucide-react"
 // Custom Hooks
 import { useCategories } from "../hooks/queries/useCategories"
+import { useProducts } from "../hooks/queries/useProducts"
 // Component Imports
 import CategoryChip from "../components/catalog/CategoryChip"
 import CategoryChipSkeleton from "../components/skeletons/catalog/CategoryChipSkeleton"
+import ProductCard from "@/components/catalog/ProductCard"
 
 const Catalog = () => {
-  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
+  const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(undefined, selectedCategory)
 
   return (
     <>
@@ -72,6 +75,29 @@ const Catalog = () => {
               </div>
             )}
       </header>
+
+      {/* Product Grid */}
+      <section>
+        {isProductsLoading ? (
+          <div className="flex items-center justify-center py-10">
+            <p className="text-sm text-muted-foreground">Loading products...</p>
+          </div>
+        )
+          : isProductsError ? (
+            <div className="flex min-h-16 items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-5 text-center">
+              <p className="text-sm text-muted-foreground">
+                We could not load products right now. Please try again in a moment.
+              </p>
+            </div>
+          )
+            : (
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {products?.products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+      </section>
     </>
   )
 }

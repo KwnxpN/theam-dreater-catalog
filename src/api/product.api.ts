@@ -2,10 +2,25 @@ import { http } from "./http";
 import type { ProductsResponse, Product, GetProductParams } from "../types/product.type";
 
 export const getProducts = async (params?: GetProductParams, category?: string): Promise<ProductsResponse> => {
-    const endpoint = category && category.trim() !== "all"
-    ? `/products/category/${category}`
-    : "/products";
-    const { data } = await http.get<ProductsResponse>(endpoint, { params });
+    const { search, ...restParams } = params ?? {};
+    const normalizedCategory = category?.trim();
+    const normalizedSearch = search?.trim();
+    const hasCategory = Boolean(normalizedCategory && normalizedCategory !== "all");
+    const hasSearch = Boolean(normalizedSearch);
+
+    const endpoint = hasCategory
+        ? `/products/category/${encodeURIComponent(normalizedCategory as string)}`
+        : hasSearch
+            ? "/products/search"
+            : "/products";
+
+    const requestParams = hasSearch
+        ? hasCategory
+            ? { ...restParams, search: normalizedSearch }
+            : { ...restParams, q: normalizedSearch }
+        : restParams;
+
+    const { data } = await http.get<ProductsResponse>(endpoint, { params: requestParams });
     return data;
 }
 

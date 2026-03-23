@@ -1,24 +1,41 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 // Shadcn UI Imports
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
+
 // Icon Imports
 import { Search } from "lucide-react"
+
 // Custom Hooks
 import { useCategories } from "../hooks/queries/useCategories"
 import { useProducts } from "../hooks/queries/useProducts"
+
 // Component Imports
 import CategoryChip from "../components/catalog/CategoryChip"
 import CategoryChipSkeleton from "../components/skeletons/catalog/CategoryChipSkeleton"
 import ProductCard from "@/components/catalog/ProductCard"
 
+// Type Imports
+import type { GetProductParams } from "@/types/product.type"
+
 const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const [productParams, setProductParams] = useState<GetProductParams>({})
+  const [searchQuery, setSearchQuery] = useState("")
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
-  const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(undefined, selectedCategory)
+  const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(productParams, selectedCategory)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProductParams((prev) => ({ ...prev, search: searchQuery || undefined }))
+    }, 500)
+
+    // Cleanup function to clear the previous timer on each new input
+    return () => clearTimeout(timer)
+  }, [searchQuery])
 
   return (
     <>
@@ -32,8 +49,12 @@ const Catalog = () => {
           </div>
 
           {/* Search Product Bar */}
-          <InputGroup className="max-w-md h-10 border-2 border-border">
-            <InputGroupInput placeholder="Search Products..." />
+          <InputGroup className="md:max-w-md h-10 border-2 border-border">
+            <InputGroupInput
+              disabled={isProductsLoading || isProductsError || selectedCategory !== "all"}
+              placeholder="Search Products..."
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <InputGroupAddon>
               <Search />
             </InputGroupAddon>

@@ -49,7 +49,7 @@ function PaginationLink({
       variant="ghost"
       size={size}
       className={cn(
-        "size-8 md:size-12 rounded-full border border-[#eed8c7] bg-transparent text-[0.875rem] md:text-[1.05rem] font-semibold text-[#475569] shadow-none transition-colors hover:bg-[#f8f1eb] hover:text-[#334155]",
+        "size-8 md:size-12 rounded-full border border-[#eed8c7] bg-transparent text-[0.875rem] md:text-[1.05rem] font-semibold text-[#475569] dark:text-[#92a0b5] shadow-none transition-colors hover:bg-[#f8f1eb] hover:text-[#334155]",
         "focus-visible:border-[#e2c4ad] focus-visible:ring-2 focus-visible:ring-[#f5e6da]",
         isActive && "border-primary bg-primary text-primary-foreground hover:bg-primary/95 hover:text-primary-foreground",
         className,

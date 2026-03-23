@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Button } from "@/components/ui/button"
 
 // Icon Imports
 import { Search } from "lucide-react"
@@ -43,8 +44,8 @@ const Catalog = () => {
     limit: LIMIT,
   })
 
-  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
-  const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(productParams, selectedCategory)
+  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError, refetch: refetchCategories } = useCategories()
+  const { data: products, isLoading: isProductsLoading, isError: isProductsError, refetch: refetchProducts } = useProducts(productParams, selectedCategory)
 
   const totalProducts = products?.total || 0
   const totalPages = Math.max(1, Math.ceil(totalProducts / (productParams.limit || LIMIT)))
@@ -110,10 +111,13 @@ const Catalog = () => {
           </div>
         )
           : isCategoriesError ? (
-            <div className="flex min-h-16 items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-5 text-center">
+            <div className="flex min-h-16 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 px-4 py-5 text-center">
               <p className="text-sm text-muted-foreground">
                 We could not load categories right now. Please try again in a moment.
               </p>
+              <Button className="ml-2" onClick={() => refetchCategories()}>
+                Retry
+              </Button>
             </div>
           )
             : (
@@ -147,10 +151,13 @@ const Catalog = () => {
           </div>
         )
           : isProductsError ? (
-            <div className="flex min-h-16 items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-5 text-center">
+            <div className="mt-6 flex flex-col gap-4 h-120 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 text-center">
               <p className="text-sm text-muted-foreground">
                 We could not load products right now. Please try again in a moment.
               </p>
+              <Button className="px-4" onClick={() => refetchProducts()}>
+                Retry
+              </Button>
             </div>
           )
             : (

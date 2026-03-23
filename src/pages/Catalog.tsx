@@ -151,7 +151,7 @@ const Catalog = () => {
           </div>
         )
           : isProductsError ? (
-            <div className="mt-6 flex flex-col gap-4 h-120 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 text-center">
+            <div className="mt-6 flex flex-col gap-4 h-120 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 px-4 py-5 text-center">
               <p className="text-sm text-muted-foreground">
                 We could not load products right now. Please try again in a moment.
               </p>
@@ -160,13 +160,20 @@ const Catalog = () => {
               </Button>
             </div>
           )
-            : (
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {products?.products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+            : products?.products.length === 0 ? (
+              <div className="mt-6 flex flex-col gap-4 h-120 items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/30 px-4 py-5 text-center">
+                <p className="text-sm text-muted-foreground">
+                  No products found for the selected category or search query. Please try adjusting your filters or search terms.
+                </p>
               </div>
-            )}
+            )
+              : (
+                <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  {products?.products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              )}
         {/* Pagination */}
         {!isProductsLoading && !isProductsError && totalPages > 1 && (
           <Pagination className="mt-6">

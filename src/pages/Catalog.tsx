@@ -1,13 +1,21 @@
+import { useState } from "react"
+// Shadcn UI Imports
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
+// Icon Imports
 import { Search } from "lucide-react"
+// Custom Hooks
 import { useCategories } from "../hooks/queries/useCategories"
+// Component Imports
+import CategoryChip from "../components/catalog/CategoryChip"
+import CategoryChipSkeleton from "../components/skeletons/catalog/CategoryChipSkeleton"
 
 const Catalog = () => {
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
+  const [selectedCategory, setSelectedCategory] = useState("all")
 
   return (
     <>
@@ -30,18 +38,39 @@ const Catalog = () => {
         </div>
 
         {/* Category Filters */}
-        <div className="no-scrollbar flex gap-2 overflow-x-auto">
-          {isCategoriesLoading && <p>Loading categories...</p>}
-          {isCategoriesError && <p>Failed to load categories</p>}
-          {categories?.map((category) => (
-            <button
-              key={category.slug}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
+        {isCategoriesLoading ? (
+          <div className="no-scrollbar flex gap-3 overflow-x-auto whitespace-nowrap p-2">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <CategoryChipSkeleton key={index} />
+            ))}
+          </div>
+        )
+          : isCategoriesError ? (
+            <div className="flex min-h-16 items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-5 text-center">
+              <p className="text-sm text-muted-foreground">
+                We could not load categories right now. Please try again in a moment.
+              </p>
+            </div>
+          )
+            : (
+              <div className="no-scrollbar flex gap-3 overflow-x-auto whitespace-nowrap p-2">
+                <CategoryChip
+                  name="All Products"
+                  isSelected={selectedCategory === "all"}
+                  onClick={() => setSelectedCategory("all")}
+                  aria-pressed={selectedCategory === "all"}
+                />
+                {categories?.map((category) => (
+                  <CategoryChip
+                    key={category.slug}
+                    name={category.name}
+                    isSelected={selectedCategory === category.slug}
+                    onClick={() => setSelectedCategory(category.slug)}
+                    aria-pressed={selectedCategory === category.slug}
+                  />
+                ))}
+              </div>
+            )}
       </header>
     </>
   )

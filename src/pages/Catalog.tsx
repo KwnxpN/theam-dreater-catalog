@@ -5,6 +5,15 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 // Icon Imports
 import { Search } from "lucide-react"
@@ -23,7 +32,11 @@ import type { GetProductParams } from "@/types/product.type"
 
 const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [productParams, setProductParams] = useState<GetProductParams>({})
+  const [page, setPage] = useState(1);
+  const [productParams, setProductParams] = useState<GetProductParams>({
+    limit: 8,
+    skip: (page - 1) * 8,
+  })
   const [searchQuery, setSearchQuery] = useState("")
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
   const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(productParams, selectedCategory)
@@ -118,6 +131,31 @@ const Catalog = () => {
                 ))}
               </div>
             )}
+        {/* Pagination */}
+        <Pagination className="mt-6">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </section>
     </>
   )

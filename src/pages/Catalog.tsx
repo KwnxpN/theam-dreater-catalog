@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { getVisiblePages } from "@/lib/utils"
 
 // Shadcn UI Imports
@@ -38,40 +38,38 @@ const LIMIT = 8
 
 const Catalog = () => {
   const [searchQuery, setSearchQuery] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [page, setPage] = useState(1)
-  const [productParams, setProductParams] = useState<GetProductParams>({
+
+  const productParams = useMemo<GetProductParams>(() => ({
     limit: LIMIT,
-  })
+    skip: (page - 1) * LIMIT,
+    search: debouncedSearch || undefined,
+  }), [page, debouncedSearch])
 
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError, refetch: refetchCategories } = useCategories()
   const { data: products, isLoading: isProductsLoading, isError: isProductsError, refetch: refetchProducts } = useProducts(productParams, selectedCategory)
 
   const totalProducts = products?.total || 0
-  const totalPages = Math.max(1, Math.ceil(totalProducts / (productParams.limit || LIMIT)))
+  const totalPages = Math.max(1, Math.ceil(totalProducts / LIMIT))
   const visiblePages = getVisiblePages(page, totalPages)
 
   // Debounce search input to avoid excessive API calls while typing
   useEffect(() => {
     const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery)
       setPage(1)
-      setProductParams((prev) => ({ ...prev, search: searchQuery || undefined, skip: 0 }))
     }, 500)
 
     // Cleanup function to clear the previous timer on each new input
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  // Reset to first page and update product parameters when the selected category changes
+  // Reset to first page when the selected category changes
   useEffect(() => {
     setPage(1)
-    setProductParams((prev) => ({ ...prev, skip: 0 }))
   }, [selectedCategory])
-
-  // Update product parameters when the page changes to fetch the correct set of products for the new page
-  useEffect(() => {
-    setProductParams((prev) => ({ ...prev, limit: LIMIT, skip: (page - 1) * LIMIT }))
-  }, [page])
 
   const handlePageChange = (nextPage: number) => {
     if (nextPage < 1 || nextPage > totalPages || nextPage === page) return
@@ -174,6 +172,7 @@ const Catalog = () => {
                   ))}
                 </div>
               )}
+
         {/* Pagination */}
         {!isProductsLoading && !isProductsError && totalPages > 1 && (
           <Pagination className="mt-6">

@@ -5,10 +5,10 @@ import {
 } from "../../api/product.api";
 import type { GetProductParams } from "../../types/product.type";
 
-export const useProducts = (params?: GetProductParams) => {
+export const useProducts = (params?: GetProductParams, category?: string) => {
     return useQuery({
-        queryKey: ["products", params],
-        queryFn: () => getProducts(params),
+        queryKey: ["products", params, category],
+        queryFn: () => getProducts(params, category),
         placeholderData: keepPreviousData
     });
 };

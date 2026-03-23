@@ -30,25 +30,78 @@ import ProductCard from "@/components/catalog/ProductCard"
 // Type Imports
 import type { GetProductParams } from "@/types/product.type"
 
+const LIMIT = 8
+
+// Helper function to determine visible page numbers for pagination
+const getVisiblePages = (currentPage: number, totalPages: number): Array<number | "ellipsis"> => {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  // Use a Set to ensure unique page numbers and include the first, last, current, and adjacent pages
+  // * e.g., for currentPage = 5 and totalPages = 10, this will include 1, 4, 5, 6, and 10
+  const pages = new Set<number>([1, totalPages, currentPage, currentPage - 1, currentPage + 1])
+
+  // Filter out invalid page numbers and sort them in ascending order
+  // * e.g., if currentPage = 1, it will include 1, 2, and totalPages, but not 0 or negative numbers
+  const filteredPages = [...pages]
+    .filter((pageNumber) => pageNumber >= 1 && pageNumber <= totalPages)
+    .sort((a, b) => a - b)
+
+  const visiblePages: Array<number | "ellipsis"> = []
+
+  // Iterate through the filtered page numbers and insert "ellipsis" where there are gaps
+  // * e.g., for filteredPages = [1, 4, 5, 6, 10], this will produce [1, "ellipsis", 4, 5, 6, "ellipsis", 10]
+  filteredPages.forEach((pageNumber, index) => {
+    const previousPage = filteredPages[index - 1]
+    if (previousPage && pageNumber - previousPage > 1) {
+      visiblePages.push("ellipsis")
+    }
+    visiblePages.push(pageNumber)
+  })
+
+  return visiblePages
+}
+
 const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1)
   const [productParams, setProductParams] = useState<GetProductParams>({
-    limit: 8,
-    skip: (page - 1) * 8,
+    limit: LIMIT,
   })
   const [searchQuery, setSearchQuery] = useState("")
   const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategories()
   const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProducts(productParams, selectedCategory)
+  const totalProducts = products?.total || 0
+  const totalPages = Math.max(1, Math.ceil(totalProducts / (productParams.limit || LIMIT)))
+  const visiblePages = getVisiblePages(page, totalPages)
 
+  // Debounce search input to avoid excessive API calls while typing
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProductParams((prev) => ({ ...prev, search: searchQuery || undefined }))
+      setPage(1)
+      setProductParams((prev) => ({ ...prev, search: searchQuery || undefined, skip: 0 }))
     }, 500)
 
     // Cleanup function to clear the previous timer on each new input
     return () => clearTimeout(timer)
   }, [searchQuery])
+
+  // Reset to first page and update product parameters when the selected category changes
+  useEffect(() => {
+    setPage(1)
+    setProductParams((prev) => ({ ...prev, skip: 0 }))
+  }, [selectedCategory])
+
+  // Update product parameters when the page changes to fetch the correct set of products for the new page
+  useEffect(() => {
+    setProductParams((prev) => ({ ...prev, limit: LIMIT, skip: (page - 1) * LIMIT }))
+  }, [page])
+
+  const handlePageChange = (nextPage: number) => {
+    if (nextPage < 1 || nextPage > totalPages || nextPage === page) return
+    setPage(nextPage)
+  }
 
   return (
     <>
@@ -132,30 +185,52 @@ const Catalog = () => {
               </div>
             )}
         {/* Pagination */}
-        <Pagination className="mt-6">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {!isProductsLoading && !isProductsError && totalPages > 1 && (
+          <Pagination className="mt-6">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={(event) => {
+                    event.preventDefault()
+                    handlePageChange(page - 1)
+                  }}
+                  aria-disabled={page === 1}
+                  className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+              {visiblePages.map((pageItem, index) => (
+                <PaginationItem key={`${pageItem}-${index}`}>
+                  {pageItem === "ellipsis" ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink
+
+                      isActive={pageItem === page}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        handlePageChange(pageItem)
+                      }}
+                    >
+                      {pageItem}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={(event) => {
+                    event.preventDefault()
+                    handlePageChange(page + 1)
+                  }}
+                  aria-disabled={page === totalPages}
+                  className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </section>
     </>
   )

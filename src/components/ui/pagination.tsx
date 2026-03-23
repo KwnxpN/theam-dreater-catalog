@@ -23,7 +23,7 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("flex items-center gap-3", className)}
+      className={cn("flex items-center gap-2", className)}
       {...props}
     />
   )
@@ -49,7 +49,7 @@ function PaginationLink({
       variant="ghost"
       size={size}
       className={cn(
-        "size-12 rounded-full border border-[#eed8c7] bg-transparent text-[1.05rem] font-semibold text-[#475569] shadow-none transition-colors hover:bg-[#f8f1eb] hover:text-[#334155]",
+        "size-8 md:size-12 rounded-full border border-[#eed8c7] bg-transparent text-[0.875rem] md:text-[1.05rem] font-semibold text-[#475569] shadow-none transition-colors hover:bg-[#f8f1eb] hover:text-[#334155]",
         "focus-visible:border-[#e2c4ad] focus-visible:ring-2 focus-visible:ring-[#f5e6da]",
         isActive && "border-primary bg-primary text-primary-foreground hover:bg-primary/95 hover:text-primary-foreground",
         className,
@@ -112,7 +112,7 @@ function PaginationEllipsis({
       aria-hidden
       data-slot="pagination-ellipsis"
       className={cn(
-        "flex size-12 items-center justify-center text-[#94a3b8] [&_svg:not([class*='size-'])]:size-5",
+        "flex size-6 md:size-12 items-center justify-center text-[#94a3b8] [&_svg:not([class*='size-'])]:size-5",
         className
       )}
       {...props}

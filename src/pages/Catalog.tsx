@@ -140,8 +140,10 @@ const Catalog = () => {
       {/* Product Grid */}
       <section>
         {isProductsLoading ? (
-          <div className="flex items-center justify-center py-10">
-            <p className="text-sm text-muted-foreground">Loading products...</p>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: LIMIT }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
           </div>
         )
           : isProductsError ? (

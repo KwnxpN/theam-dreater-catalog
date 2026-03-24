@@ -2,7 +2,7 @@ import type { Product } from "@/types/product.type";
 
 export default function RatingBars({ product }: { product: Product }) {
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-4 w-full max-w-2xl">
       {[5, 4, 3, 2, 1].map((star) => {
         const count = product.reviews.filter(
           (r) => Math.round(r.rating) === star
@@ -14,17 +14,22 @@ export default function RatingBars({ product }: { product: Product }) {
             : 0;
 
         return (
-          <div key={star} className="flex items-center gap-3">
-            <span className="w-4">{star}</span>
-            <div className="w-full h-2 bg-gray-200 dark:bg-[#2a1a12] rounded">
+          <div key={star} className="flex items-center gap-4 w-full">
+            {/* Star */}
+            <div className="w-6 text-sm">{star}</div>
+
+            {/* Bar */}
+            <div className="flex-1 h-3 bg-primary/10 dark:bg rounded-full overflow-hidden">
               <div
-                className="h-2 bg-primary rounded"
+                className="h-3 bg-primary rounded-full"
                 style={{ width: `${percent}%` }}
               />
             </div>
-            <span className="text-gray-400 text-sm">
+
+            {/* Percent */}
+            <div className="w-12 text-sm text-gray-400 text-right">
               {Math.round(percent)}%
-            </span>
+            </div>
           </div>
         );
       })}

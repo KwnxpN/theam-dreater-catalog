@@ -74,7 +74,7 @@ export default function ProductInfo({ product }: { product: Product }) {
             </div>
 
             {/* Quantity + Cart */}
-            <div className="flex items-center gap-4 mt-6">
+            {/* <div className="flex items-center gap-4 mt-6">
                 <QuantitySelector qty={qty} setQty={setQty} />
 
                 <Button
@@ -83,7 +83,7 @@ export default function ProductInfo({ product }: { product: Product }) {
                 >
                     Add To Cart
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

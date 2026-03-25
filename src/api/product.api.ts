@@ -15,9 +15,7 @@ export const getProducts = async (params?: GetProductParams, category?: string):
             : "/products";
 
     const requestParams = hasSearch
-        ? hasCategory
-            ? { ...restParams, search: normalizedSearch }
-            : { ...restParams, q: normalizedSearch }
+        ? { ...restParams, q: normalizedSearch }
         : restParams;
 
     const { data } = await http.get<ProductsResponse>(endpoint, { params: requestParams });

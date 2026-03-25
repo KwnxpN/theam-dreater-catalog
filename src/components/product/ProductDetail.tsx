@@ -10,8 +10,8 @@ type Props = {
 export default function ProductDetail({ product }: Props) {
   return (
     <div className="min-h-screen text-gray-900 dark:text-white py-10">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-2 gap-10  p-6 rounded-xl">
+      <div className="max-w-6xl mx-auto px-3 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 rounded-xl">
           <ProductImages product={product} />
           <ProductInfo product={product} />
         </div>

@@ -17,7 +17,7 @@ export default function ProductImages({ product }: { product: Product }) {
                 />
             </div>
 
-            <div className="flex gap-3 mt-4">
+            <div className="flex gap-3 mt-10">
                 {images.map((img, index) => (
                     <img
                         key={index}

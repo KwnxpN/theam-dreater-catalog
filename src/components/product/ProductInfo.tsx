@@ -1,10 +1,6 @@
-import { useState } from "react";
 import type { Product } from "@/types/product.type";
-import QuantitySelector from "./QuantitySelector";
-import { Button } from "@/components/ui/button"
 
 export default function ProductInfo({ product }: { product: Product }) {
-    const [qty, setQty] = useState(1);
 
     const discountedPrice =
         product.price - (product.price * product.discountPercentage) / 100;
@@ -72,18 +68,6 @@ export default function ProductInfo({ product }: { product: Product }) {
                     </p>
                 </div>
             </div>
-
-            {/* Quantity + Cart */}
-            {/* <div className="flex items-center gap-4 mt-6">
-                <QuantitySelector qty={qty} setQty={setQty} />
-
-                <Button
-                    aria-label="Submit"
-                    className="flex-1 h-12 bg-primary hover:bg-orange-600 text-white rounded-lg font-semibold"
-                >
-                    Add To Cart
-                </Button>
-            </div> */}
         </div>
     );
 }

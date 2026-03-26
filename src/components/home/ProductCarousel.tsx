@@ -61,7 +61,7 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
         <div className="flex flex-col gap-3">
           <h2 className="text-primary text-3xl md:text-[2.5rem] font-bold tracking-tight">Featured Collections</h2>
           <p className="text-base md:text-xl max-w-2xl">
-            Curated essentials that bring nature indoors
+            Explore our handpicked selection of premium products.
           </p>
         </div>
         <div className="hidden md:flex items-center gap-3">

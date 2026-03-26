@@ -27,7 +27,7 @@ const FAQ = () => {
             Why Theam Dreater?
           </h2>
           <p className="text-muted-foreground text-base md:text-lg">
-            We believe that your home should be a reflection of the natural world. Our philosophy centers on materials that age gracefully and designs that serve a lifetime.
+            We believe your home should reflect your taste and your everyday life. Theam Dreater is a curated product catalog for all kinds of products selected for quality, usability, and design that lasts.
           </p>
         </div>
 

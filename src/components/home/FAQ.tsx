@@ -1,21 +1,24 @@
-import { Handshake, Leaf, Gem } from "lucide-react";
+import { Eye, Filter, CheckCircle2 } from "lucide-react";
 
 const features = [
   {
-    icon: Handshake,
-    title: "Ethically Sourced",
-    description: "Every piece is traceable. We partner directly with artisan collectives to ensure fair wages and safe working environments."
+    title: "Visual-First Discovery",
+    description:
+      "Explore products through clear, high-quality images supported by concise and practical details, helping you understand key features before opening each individual item page.",
+    icon: Eye,
   },
   {
-    icon: Leaf,
-    title: "Eco-Friendly Process",
-    description: "From carbon-neutral shipping to 100% biodegradable packaging, our footprint is as light as our aesthetic."
+    title: "Smart Filtering",
+    description:
+      "Quickly narrow down the catalog using intuitive category filters, allowing you to focus on the most relevant products and navigate collections with greater efficiency.",
+    icon: Filter,
   },
   {
-    icon: Gem,
-    title: "Timeless Quality",
-    description: "We reject fast furniture. Our products are engineered for durability and designed to transcend fleeting seasonal trends."
-  }
+    title: "Trusted Information",
+    description:
+      "Every product listing is carefully reviewed for clarity and consistency, ensuring specifications, descriptions, and essential details remain accurate, structured, and reliable.",
+    icon: CheckCircle2,
+  },
 ];
 
 const FAQ = () => {
@@ -24,10 +27,12 @@ const FAQ = () => {
       <div className="max-w-7xl mx-auto">
         <div className="max-w-3xl mb-12">
           <h2 className="text-foreground text-3xl md:text-[2.5rem] font-bold tracking-tight mb-4">
-            Why Theam Dreater?
+            Why Choose Theam Dreater?
           </h2>
           <p className="text-muted-foreground text-base md:text-lg">
-            We believe your home should reflect your taste and your everyday life. Theam Dreater is a curated product catalog for all kinds of products selected for quality, usability, and design that lasts.
+            Theam Dreater is a curated product catalog built for clarity and discovery.
+            We organize collections thoughtfully so you can explore products with focus,
+            structure, and ease.
           </p>
         </div>
 

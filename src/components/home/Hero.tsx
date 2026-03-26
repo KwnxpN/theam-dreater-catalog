@@ -150,10 +150,10 @@ const Hero = () => {
         </div>
         <div className="flex flex-col gap-y-5 justify-center text-center lg:text-left">
           <span className="hero-span text-sm text-primary font-semibold">
-            ABOUT OUR COMPANY
+            Carefully Curated Product Collections
           </span>
           <h1 className="hero-h1 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.15] pb-1" style={{ opacity: 0 }}>
-            We Curate <br /> Meaningful <br /> Spaces <br /> Through Design{" "}
+            Discover Products <br /> Designed to Inspire <br /> Built to Explore{" "}
           </h1>
           <p className="hero-p text-gray-500 tracking-wide font-light text-base sm:text-lg">
             At Theam Dreater, we present thoughtfully selected furniture

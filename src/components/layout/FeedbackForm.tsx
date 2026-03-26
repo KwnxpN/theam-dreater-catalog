@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -9,29 +9,50 @@ import { Email } from "../../emails/Email";
 
 const FeedbackForm = () => {
     const { mutateAsync: sendEmail, isPending } = useSendEmail();
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [emailHtml, setEmailHtml] = useState("");
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const email = String(formData.get("email") ?? "").trim();
-        const message = String(formData.get("message") ?? "").trim();
-
-        if (!message) {
+    useEffect(() => {
+        if (!message.trim()) {
+            setEmailHtml("");
             return;
         }
 
-        const html = renderToStaticMarkup(<Email message={message} />);
+        // Render in the next tick so input handling stays responsive.
+        const timerId = window.setTimeout(() => {
+            try {
+                const html = renderToStaticMarkup(<Email message={message} />);
+                setEmailHtml(html);
+            } catch (error) {
+                console.error("Failed to pre-render feedback email html:", error);
+            }
+        }, 0);
+
+        return () => {
+            window.clearTimeout(timerId);
+        };
+    }, [message]);
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        if (!message.trim() || !emailHtml || !email.trim()) {
+            return;
+        }
 
         try {
             await sendEmail({
                 to: import.meta.env.VITE_FEEDBACK_TO_EMAIL ?? "onboarding@resend.dev",
                 from: import.meta.env.VITE_FEEDBACK_FROM_EMAIL ?? "onboarding@resend.dev",
                 subject: `New feedback${email ? ` from ${email}` : ""}`,
-                html,
-                replyTo: email || undefined,
+                html: emailHtml,
+                replyTo: email.trim() || undefined,
             });
 
-            event.currentTarget.reset();
+            setEmail("");
+            setMessage("");
+            setEmailHtml("");
         } catch {
             // Error is handled in mutation onError; keep user input for retry.
         }
@@ -42,17 +63,21 @@ const FeedbackForm = () => {
                 id="email"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="Your email"
                 aria-label="Your email"
                 className="border-2 border-border" />
             <Textarea
                 id="message"
                 name="message"
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
                 aria-label="Your message"
                 placeholder="What you want to tell us?"
                 className="border-2 border-border resize-none h-24 thin-scrollbar"
             />
-            <Button className="flex justify-self-end" type="submit" disabled={isPending}>
+            <Button className="flex justify-self-end" type="submit" disabled={isPending || !message.trim() || !emailHtml || !email.trim()}>
                 {isPending ? "Sending..." : "Send"}
                 <SendHorizonal />
             </Button>

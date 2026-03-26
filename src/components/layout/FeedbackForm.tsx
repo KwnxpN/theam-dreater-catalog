@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { SendHorizonal } from "lucide-react";
 import { useSendEmail } from "../../hooks/queries/useEmail";
 import { generateFeedbackEmailHtml } from "../../api/email.api";
+import { toast } from "sonner"
 
 const FeedbackForm = () => {
     const { mutateAsync: sendEmail, isPending } = useSendEmail();
@@ -34,8 +35,10 @@ const FeedbackForm = () => {
 
             setEmail("");
             setMessage("");
+            toast.success("Feedback sent successfully!");
         } catch {
             // Error is handled in mutation onError; keep user input for retry.
+            toast.error("Failed to send feedback. Please try again.");
         }
     }
     return (

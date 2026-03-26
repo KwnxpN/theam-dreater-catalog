@@ -169,7 +169,7 @@ const Hero = () => {
           <div className="hero-btn flex flex-wrap items-center justify-center lg:justify-start gap-4" style={{ opacity: 0 }}>
             <NavLink to="/catalog">
               <Button className="rounded-2xl p-6">
-                Shop Now
+                Explore Catalog
               </Button>
             </NavLink>
           </div>

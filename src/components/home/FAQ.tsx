@@ -40,7 +40,7 @@ const FAQ = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group bg-card text-card-foreground rounded-4xl p-8 lg:p-10 shadow-sm flex flex-col items-start transition-transform hover:-translate-y-1 duration-300"
+              className="group bg-card border text-card-foreground rounded-4xl p-8 lg:p-10 shadow-sm flex flex-col items-start transition-transform hover:-translate-y-1 duration-300"
             >
               <div className="w-12 h-12 rounded-full bg-accent group-hover:bg-primary transition-colors duration-300 flex items-center justify-center mb-6">
                 <feature.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors duration-300" strokeWidth={1.5} />

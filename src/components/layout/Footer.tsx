@@ -1,8 +1,6 @@
-import { CheckCircle2, Eye, Filter, Package, SendHorizonal, User } from "lucide-react";
+import { CheckCircle2, Eye, Filter, Package, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import FeedbackForm from "./FeedbackForm";
 import KwnxpN from "@/assets/images/KwnxpN.jpg";
 import ExxiDaus from "@/assets/images/ExxiDaus.png";
 import SRYT4E from "@/assets/images/SRYT4E.jpg";
@@ -53,7 +51,7 @@ const Footer = () => {
   return (
     <footer className="bg-background border-t-2 border-border py-6 px-8 shadow-md flex flex-col gap-4">
       {/* Footer Content */}
-      <section className="grid grid-cols-4 gap-x-8">
+      <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Grid 1: Company Info */}
         <div className="space-y-4">
           {/* Logo */}
@@ -124,29 +122,12 @@ const Footer = () => {
         {/* Grid 4: Feedback Form */}
         <div className="space-y-4">
           <h3 className="font-semibold text-lg">Send us a message</h3>
-          <form className="space-y-2">
-            <Input
-              id="email"
-              type="email"
-              placeholder="Your email"
-              aria-label="Your email"
-              className="border-2 border-border" />
-            <Textarea
-              id="message"
-              aria-label="Your message"
-              placeholder="What you want to tell us?"
-              className="border-2 border-border resize-none h-24 thin-scrollbar"
-            />
-            <Button className="flex justify-self-end" type="submit">
-              Send
-              <SendHorizonal />
-            </Button>
-          </form>
+          <FeedbackForm />
         </div>
       </section>
 
       {/* Copyright */}
-      <div className="text-sm text-muted-foreground">
+      <div className="mt-2 border-t border-border pt-4 text-sm text-muted-foreground">
         <p>&copy; 2026 Theam Dreater. All rights reserved.</p>
       </div>
     </footer>

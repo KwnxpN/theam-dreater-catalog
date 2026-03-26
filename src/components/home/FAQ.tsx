@@ -18,13 +18,13 @@ const features = [
   }
 ];
 
-const WhyTerraModern = () => {
+const FAQ = () => {
   return (
     <div className="w-full bg-muted/40 py-20 px-8 lg:px-22">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-3xl mb-12">
           <h2 className="text-foreground text-3xl md:text-[2.5rem] font-bold tracking-tight mb-4">
-            Why TerraModern?
+            Why Theam Dreater?
           </h2>
           <p className="text-muted-foreground text-base md:text-lg">
             We believe that your home should be a reflection of the natural world. Our philosophy centers on materials that age gracefully and designs that serve a lifetime.
@@ -54,4 +54,4 @@ const WhyTerraModern = () => {
   );
 };
 
-export default WhyTerraModern;
+export default FAQ;

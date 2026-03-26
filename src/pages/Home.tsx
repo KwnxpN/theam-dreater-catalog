@@ -1,6 +1,6 @@
 import Hero from '../components/home/Hero'
 import ProductCarousel from '../components/home/ProductCarousel'
-import WhyTerraModern from '../components/home/FAQ'
+import FAQ from '../components/home/FAQ'
 import { useProducts } from '@/hooks/queries/useProducts'
 import { useMemo } from 'react'
 import type { GetProductParams } from '@/types/product.type'
@@ -56,7 +56,7 @@ const Home = () => {
       <div className="flex flex-col gap-y-16">
         <Hero />
         {renderProductSection()}
-        <WhyTerraModern />
+        <FAQ />
       </div>
     </>
   )

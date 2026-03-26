@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import sofaHero from "../../assets/images/sofa_hero.png";
 import { useEffect, useRef } from 'react';
 import { animate, splitText } from 'animejs';
+import { NavLink } from "react-router-dom";
 
 const Hero = () => {
   const root = useRef<HTMLDivElement>(null);
@@ -166,8 +167,11 @@ const Hero = () => {
             modern, conscious home.
           </p>
           <div className="hero-btn flex flex-wrap items-center justify-center lg:justify-start gap-4" style={{ opacity: 0 }}>
-            <Button className="rounded-2xl p-6">Shop Collection</Button>
-            <Button className="rounded-2xl p-6 border-2 border-primary" variant="secondary">View Lookbook</Button>
+            <NavLink to="/catalog">
+              <Button className="rounded-2xl p-6">
+                Shop Now
+              </Button>
+            </NavLink>
           </div>
         </div>
       </div>

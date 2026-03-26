@@ -29,7 +29,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="border-b border-muted shadow-md relative">
+    <header className="sticky top-0 z-50 bg-background border-b border-muted shadow-md">
       <div className="flex mx-auto justify-between items-center px-4 py-4">
         <div className="flex items-center gap-6">
           {/* Logo */}

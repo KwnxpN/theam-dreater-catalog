@@ -1,58 +1,39 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { useState, type FormEvent } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { SendHorizonal } from "lucide-react";
 import { useSendEmail } from "../../hooks/queries/useEmail";
-import { Email } from "../../emails/Email";
+import { generateFeedbackEmailHtml } from "../../api/email.api";
 
 const FeedbackForm = () => {
     const { mutateAsync: sendEmail, isPending } = useSendEmail();
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
-    const [emailHtml, setEmailHtml] = useState("");
-
-    useEffect(() => {
-        if (!message.trim()) {
-            setEmailHtml("");
-            return;
-        }
-
-        // Render in the next tick so input handling stays responsive.
-        const timerId = window.setTimeout(() => {
-            try {
-                const html = renderToStaticMarkup(<Email message={message} />);
-                setEmailHtml(html);
-            } catch (error) {
-                console.error("Failed to pre-render feedback email html:", error);
-            }
-        }, 0);
-
-        return () => {
-            window.clearTimeout(timerId);
-        };
-    }, [message]);
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        if (!message.trim() || !emailHtml || !email.trim()) {
+        if (!message.trim() || !email.trim()) {
             return;
         }
 
         try {
+            const html = await generateFeedbackEmailHtml({
+                message: message.trim(),
+                email: email.trim() || undefined,
+            });
+
             await sendEmail({
                 to: import.meta.env.VITE_FEEDBACK_TO_EMAIL ?? "onboarding@resend.dev",
                 from: import.meta.env.VITE_FEEDBACK_FROM_EMAIL ?? "onboarding@resend.dev",
                 subject: `New feedback${email ? ` from ${email}` : ""}`,
-                html: emailHtml,
+                html,
                 replyTo: email.trim() || undefined,
             });
 
             setEmail("");
             setMessage("");
-            setEmailHtml("");
         } catch {
             // Error is handled in mutation onError; keep user input for retry.
         }
@@ -77,7 +58,7 @@ const FeedbackForm = () => {
                 placeholder="What you want to tell us?"
                 className="border-2 border-border resize-none h-24 thin-scrollbar"
             />
-            <Button className="flex justify-self-end" type="submit" disabled={isPending || !message.trim() || !emailHtml || !email.trim()}>
+            <Button className="flex justify-self-end" type="submit" disabled={isPending || !message.trim() || !email.trim()}>
                 {isPending ? "Sending..." : "Send"}
                 <SendHorizonal />
             </Button>

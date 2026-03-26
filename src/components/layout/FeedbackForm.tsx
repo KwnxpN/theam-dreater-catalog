@@ -1,37 +1,59 @@
+import type { FormEvent } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { SendHorizonal } from "lucide-react";
-
-function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const message = formData.get("message");
-    // Here you can handle the form data, e.g., send it to an API or log it
-    console.log("Email:", email);
-    console.log("Message:", message);
-    // Optionally, you can reset the form after submission
-    event.currentTarget.reset();
-}
+import { useSendEmail } from "../../hooks/queries/useEmail";
+import { Email } from "../../emails/Email";
 
 const FeedbackForm = () => {
+    const { mutateAsync: sendEmail, isPending } = useSendEmail();
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const email = String(formData.get("email") ?? "").trim();
+        const message = String(formData.get("message") ?? "").trim();
+
+        if (!message) {
+            return;
+        }
+
+        const html = renderToStaticMarkup(<Email message={message} />);
+
+        try {
+            await sendEmail({
+                to: import.meta.env.VITE_FEEDBACK_TO_EMAIL ?? "onboarding@resend.dev",
+                from: import.meta.env.VITE_FEEDBACK_FROM_EMAIL ?? "onboarding@resend.dev",
+                subject: `New feedback${email ? ` from ${email}` : ""}`,
+                html,
+                replyTo: email || undefined,
+            });
+
+            event.currentTarget.reset();
+        } catch {
+            // Error is handled in mutation onError; keep user input for retry.
+        }
+    }
     return (
         <form className="space-y-2" onSubmit={handleSubmit}>
             <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="Your email"
                 aria-label="Your email"
                 className="border-2 border-border" />
             <Textarea
                 id="message"
+                name="message"
                 aria-label="Your message"
                 placeholder="What you want to tell us?"
                 className="border-2 border-border resize-none h-24 thin-scrollbar"
             />
-            <Button className="flex justify-self-end" type="submit">
-                Send
+            <Button className="flex justify-self-end" type="submit" disabled={isPending}>
+                {isPending ? "Sending..." : "Send"}
                 <SendHorizonal />
             </Button>
         </form>

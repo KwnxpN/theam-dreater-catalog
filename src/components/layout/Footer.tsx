@@ -1,5 +1,8 @@
-import { Package, User } from "lucide-react";
+import { CheckCircle2, Eye, Filter, Package, SendHorizonal, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 import KwnxpN from "@/assets/images/KwnxpN.jpg";
 import ExxiDaus from "@/assets/images/ExxiDaus.png";
 import SRYT4E from "@/assets/images/SRYT4E.jpg";
@@ -28,9 +31,27 @@ const developers: Developer[] = [
   },
 ];
 
+const catalogHighlights = [
+  {
+    title: "Visual-First Discovery",
+    description: "Explore products with clear images and practical details before opening each item.",
+    icon: Eye,
+  },
+  {
+    title: "Smart Filtering",
+    description: "Narrow catalogs quickly by category to find relevant options faster.",
+    icon: Filter,
+  },
+  {
+    title: "Trusted Information",
+    description: "Every listing is reviewed for consistency, so specs and descriptions stay accurate and useful.",
+    icon: CheckCircle2,
+  },
+];
+
 const Footer = () => {
   return (
-    <footer className="bg-background border-t border-muted py-6 px-8 shadow-md flex flex-col gap-4">
+    <footer className="bg-background border-t-2 border-border py-6 px-8 shadow-md flex flex-col gap-4">
       {/* Footer Content */}
       <section className="grid grid-cols-4 gap-x-8">
         {/* Grid 1: Company Info */}
@@ -78,6 +99,49 @@ const Footer = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Grid 3: Strength */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-lg">What makes us different?</h3>
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            {catalogHighlights.map((point) => {
+              const Icon = point.icon;
+
+              return (
+                <li key={point.title} className="flex items-start gap-2">
+                  <Icon className="size-4 text-primary mt-0.5 shrink-0" aria-hidden="true" />
+                  <div>
+                    <p className="font-medium text-foreground">{point.title}</p>
+                    <p>{point.description}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Grid 4: Feedback Form */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-lg">Send us a message</h3>
+          <form className="space-y-2">
+            <Input
+              id="email"
+              type="email"
+              placeholder="Your email"
+              aria-label="Your email"
+              className="border-2 border-border" />
+            <Textarea
+              id="message"
+              aria-label="Your message"
+              placeholder="What you want to tell us?"
+              className="border-2 border-border resize-none h-24 thin-scrollbar"
+            />
+            <Button className="flex justify-self-end" type="submit">
+              Send
+              <SendHorizonal />
+            </Button>
+          </form>
         </div>
       </section>
 

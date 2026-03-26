@@ -19,6 +19,7 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
   const [current, setCurrent] = useState(0)
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }))
   const sectionRef = useRef<HTMLDivElement>(null)
+  const hasAnimated = useRef(false)
 
   useEffect(() => {
     if (!api) return
@@ -30,7 +31,8 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && sectionRef.current) {
+          if (entry.isIntersecting && sectionRef.current && !hasAnimated.current) {
+            hasAnimated.current = true
             animate(sectionRef.current, {
               y: [100, 0],
               opacity: [0, 1],
@@ -38,13 +40,7 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
               duration: 1200,
               delay: 100,
             })
-          } else if (sectionRef.current) {
-            animate(sectionRef.current, {
-              y: 100,
-              opacity: 0,
-              ease: 'in(2)',
-              duration: 600,
-            })
+            observer.unobserve(entry.target)
           }
         })
       },

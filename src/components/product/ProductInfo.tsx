@@ -1,15 +1,10 @@
 import type { Product } from "@/types/product.type";
 import StarRating from "./StarRating";
 
-export default function ProductInfo({ product }: { product: Product }) {
-    const reviews = product.reviews ?? [];
+export default function ProductInfo({ product, averageRating, }: { product: Product, averageRating: number }) {
     const discountedPrice =
-        product.price - (product.price * product.discountPercentage) / 100;
+    product.price - (product.price * product.discountPercentage) / 100;
 
-    const averageRating =
-        reviews.length > 0
-            ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-            : 0;
     return (
         <div>
             {/* Stock + Brand */}

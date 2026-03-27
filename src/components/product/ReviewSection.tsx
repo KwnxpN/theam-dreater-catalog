@@ -2,13 +2,19 @@ import type { Product } from "@/types/product.type";
 import RatingBars from "./RatingBars";
 import StarRating from "./StarRating";
 
-export default function ReviewSection({ product }: { product: Product }) {
+type Props = {
+  product: Product;
+  averageRating: number;
+  counts: number[];
+};
+
+export default function ReviewSection({
+    product,
+    averageRating,
+    counts,
+  }: Props) {
   const reviews = product.reviews ?? [];
 
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-      : 0;
   return (
     <div className="mt-14 pt-8 border-t border-gray-200 dark:border-gray-700">
       <h2 className="text-2xl font-bold mb-8">Customer Reviews</h2>
@@ -23,13 +29,14 @@ export default function ReviewSection({ product }: { product: Product }) {
           <div className="md:mt-1">
             <StarRating rating={averageRating} />
           </div>
+
           <div className="text-gray-400 text-sm mt-1">
             Based on {reviews.length} reviews
           </div>
         </div>
 
         {/* Bars */}
-        <RatingBars product={product} />
+        <RatingBars counts={counts} total={reviews.length} />
       </div>
     </div>
   );

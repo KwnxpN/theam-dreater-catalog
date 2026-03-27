@@ -10,7 +10,7 @@ export default function StarRating({ rating }: { rating: number }) {
         ))}
       </div>
 
-      {/* Yellow stars */}
+      {/* Orange stars */}
       <div
         className="absolute top-0 left-0 text-primary flex gap-1 overflow-hidden whitespace-nowrap"
         style={{ width: `${percent}%` }}

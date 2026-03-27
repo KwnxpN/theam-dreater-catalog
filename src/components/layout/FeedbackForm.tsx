@@ -1,0 +1,72 @@
+import { useState, type FormEvent } from "react";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+import { SendHorizonal } from "lucide-react";
+import { useSendEmail } from "../../hooks/queries/useEmail";
+import { generateFeedbackEmailHtml } from "../../api/email.api";
+import { toast } from "sonner"
+
+const FeedbackForm = () => {
+    const { mutateAsync: sendEmail, isPending } = useSendEmail();
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        if (!message.trim() || !email.trim()) {
+            return;
+        }
+
+        try {
+            const html = await generateFeedbackEmailHtml({
+                message: message.trim(),
+                email: email.trim() || undefined,
+            });
+
+            await sendEmail({
+                to: import.meta.env.VITE_FEEDBACK_TO_EMAIL ?? "onboarding@resend.dev",
+                from: import.meta.env.VITE_FEEDBACK_FROM_EMAIL ?? "onboarding@resend.dev",
+                subject: `New feedback${email ? ` from ${email}` : ""}`,
+                html,
+                replyTo: email.trim() || undefined,
+            });
+
+            setEmail("");
+            setMessage("");
+            toast.success("Feedback sent successfully!");
+        } catch {
+            // Error is handled in mutation onError; keep user input for retry.
+            toast.error("Failed to send feedback. Please try again.");
+        }
+    }
+    return (
+        <form className="space-y-2" onSubmit={handleSubmit}>
+            <Input
+                id="email"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Your email"
+                aria-label="Your email"
+                className="border-2 border-border" />
+            <Textarea
+                id="message"
+                name="message"
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                aria-label="Your message"
+                placeholder="What you want to tell us?"
+                className="border-2 border-border resize-none h-24 thin-scrollbar"
+            />
+            <Button className="flex justify-self-end" type="submit" disabled={isPending || !message.trim() || !email.trim()}>
+                {isPending ? "Sending..." : "Send"}
+                <SendHorizonal />
+            </Button>
+        </form>
+    )
+}
+
+export default FeedbackForm

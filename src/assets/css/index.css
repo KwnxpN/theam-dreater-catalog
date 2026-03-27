@@ -199,4 +199,9 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .thin-scrollbar {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-width: thin;
+  }
 }

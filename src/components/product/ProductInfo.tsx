@@ -1,10 +1,15 @@
 import type { Product } from "@/types/product.type";
+import StarRating from "./StarRating";
 
 export default function ProductInfo({ product }: { product: Product }) {
-
+    const reviews = product.reviews ?? [];
     const discountedPrice =
         product.price - (product.price * product.discountPercentage) / 100;
 
+    const averageRating =
+        reviews.length > 0
+            ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+            : 0;
     return (
         <div>
             {/* Stock + Brand */}
@@ -18,9 +23,11 @@ export default function ProductInfo({ product }: { product: Product }) {
 
             {/* Rating */}
             <div className="flex items-center gap-2 mt-2">
-                <span className="text-primary">★★★★★</span>
+                <span className="text-primary">
+                    <StarRating rating={averageRating} />
+                </span>
                 <span className="text-gray-500 dark:text-gray-400 text-sm">
-                    {product.rating} ({product.reviews.length} reviews)
+                    {averageRating.toFixed(2)} ({product.reviews.length} reviews)
                 </span>
             </div>
 

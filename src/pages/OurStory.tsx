@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Crosshair from "@/components/Crosshair";
 import { Balloon } from "@/components/Balloon";
+import { OurStoryContent } from "@/components/OurStoryContent";
 import champ01 from "../assets/images/champ01.jpg";
 import champ02 from "../assets/images/champ02.jpg";
 import champ03 from "../assets/images/champ03.jpg";
@@ -35,13 +35,13 @@ const OurStory = () => {
   const [balloons, setBalloons] = useState<BalloonData[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
-  const navigate = useNavigate();
+  const [showStory, setShowStory] = useState(false);
 
   useEffect(() => {
-    if (timeLeft === 0 && score > 20) {
-      navigate('/about-us');
+    if (timeLeft === 0 && score >= 20) {
+      setShowStory(true);
     }
-  }, [timeLeft, score, navigate]);
+  }, [timeLeft, score]);
 
   // Timer countdown
   useEffect(() => {
@@ -98,7 +98,20 @@ const OurStory = () => {
     setTimeLeft(30);
     setBalloons([]);
     setIsPlaying(true);
+    setShowStory(false);
   };
+
+  const resetGame = () => {
+    setShowStory(false);
+    setScore(0);
+    setTimeLeft(30);
+    setBalloons([]);
+  };
+
+  // Show Our Story content if player unlocked it
+  if (showStory) {
+    return <OurStoryContent onPlayAgain={resetGame} />;
+  }
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background">
@@ -119,7 +132,11 @@ const OurStory = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
           <div className="pointer-events-auto flex flex-col items-center gap-6 p-10 bg-background/80 backdrop-blur-md rounded-3xl border shadow-2xl">
             <h2 className="text-4xl font-bold text-center">
-              {timeLeft === 0 ? 'Try Again!' : 'Pop the balloons above 20 to get real Our story!'}
+              {timeLeft === 0
+                ? score >= 20
+                  ? '✨ Unlocking your story...'
+                  : `So close! You got ${score}/20 — try again!`
+                : 'Pop the balloons above 20 to unlock Our Story!'}
             </h2>
             {timeLeft === 0 && <p className="text-2xl text-muted-foreground font-medium mb-2">Final Score: {score}</p>}
             <button

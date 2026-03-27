@@ -118,7 +118,7 @@ const OurStory = () => {
       <Crosshair />
 
       {/* Score Header */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 select-none pointer-events-none flex flex-col items-center gap-2">
+      <div className="absolute w-full top-12 left-1/2 -translate-x-1/2 z-20 select-none pointer-events-none flex flex-col items-center gap-2">
         <h1 className="text-5xl font-extrabold tracking-tight drop-shadow-md">Score: {score}</h1>
         {(isPlaying || timeLeft === 0) && (
           <h2 className={`text-4xl font-bold drop-shadow-sm ${timeLeft <= 5 ? 'text-red-500 animate-bounce' : 'text-foreground'}`}>

@@ -1,12 +1,15 @@
 import type { Product } from "@/types/product.type"
 import { Star } from "lucide-react"
 import { NavLink } from "react-router-dom"
+import { useReviewStats } from "@/hooks/useReviewStats"
 
 type ProductCardProps = {
   product: Product
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+    const { average } = useReviewStats(product.reviews ?? [])
+
   return (
     <NavLink to={`/product/${product.id}`} className="h-full hover:scale-103 transition-transform duration-300">
       <article className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
@@ -32,7 +35,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="mt-auto flex items-center justify-between pt-1">
             <div className="flex items-center gap-2 text-lg font-semibold">
               <Star className="size-5 fill-[#f2be1a] text-[#f2be1a]" />
-              <span>{product.rating.toFixed(2)}</span>
+              <span>{average.toFixed(2)}</span>
             </div>
           </div>
         </div>

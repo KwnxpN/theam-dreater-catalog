@@ -99,82 +99,11 @@ theam-dreater/
 |   |-- main.tsx
 |   |-- vite-env.d.ts
 |   |-- api/
-|   |   |-- category.api.ts
-|   |   |-- email.api.ts
-|   |   |-- http.ts
-|   |   |-- product.api.ts
 |   |-- assets/
-|   |   |-- css/
-|   |   |   |-- fonts.css
-|   |   |   |-- index.css
-|   |   |-- fonts/
-|   |   |-- images/
-|   |   |-- mp3/
 |   |-- components/
-|   |   |-- Balloon.tsx
-|   |   |-- Crosshair.tsx
-|   |   |-- OurStoryContent.tsx
-|   |   |-- Placeholder.tsx
-|   |   |-- catalog/
-|   |   |   |-- CategoryChip.tsx
-|   |   |   |-- ProductCard.tsx
-|   |   |-- home/
-|   |   |   |-- FAQ.tsx
-|   |   |   |-- Hero.tsx
-|   |   |   |-- ProductCarousel.tsx
-|   |   |-- layout/
-|   |   |   |-- DefaultLayout.tsx
-|   |   |   |-- FeedbackForm.tsx
-|   |   |   |-- Footer.tsx
-|   |   |   |-- Header.tsx
-|   |   |   |-- ToggleDark.tsx
-|   |   |-- product/
-|   |   |   |-- ProductDetail.tsx
-|   |   |   |-- ProductImages.tsx
-|   |   |   |-- ProductInfo.tsx
-|   |   |   |-- RatingBars.tsx
-|   |   |   |-- ReviewSection.tsx
-|   |   |   |-- StarRating.tsx
-|   |   |-- skeletons/
-|   |   |   |-- catalog/
-|   |   |   |   |-- CategoryChipSkeleton.tsx
-|   |   |   |   |-- ProductCardSkeleton.tsx
-|   |   |   |-- home/
-|   |   |   |   |-- HeroSkeleton.tsx
-|   |   |   |   |-- HomeSkeleton.tsx
-|   |   |   |   |-- ProductCarouselSkeleton.tsx
-|   |   |   |-- product/
-|   |   |   |   |-- ProductDetailSkeleton.tsx
-|   |   |-- ui/
-|   |       |-- avatar.tsx
-|   |       |-- button.tsx
-|   |       |-- carousel.tsx
-|   |       |-- dialog.tsx
-|   |       |-- input-group.tsx
-|   |       |-- input.tsx
-|   |       |-- pagination.tsx
-|   |       |-- skeleton.tsx
-|   |       |-- sonner.tsx
-|   |       |-- switch.tsx
-|   |       |-- textarea.tsx
 |   |-- emails/
-|   |   |-- Email.tsx
-|   |   |-- theme.ts
 |   |-- hooks/
-|   |   |-- useReviewStats.ts
-|   |   |-- queries/
-|   |       |-- useCategories.ts
-|   |       |-- useEmail.ts
-|   |       |-- useProducts.ts
 |   |-- lib/
-|   |   |-- utils.ts
 |   |-- pages/
-|   |   |-- Catalog.tsx
-|   |   |-- Home.tsx
-|   |   |-- NotFound.tsx
-|   |   |-- OurStory.tsx
-|   |   |-- ProductDetailPage.tsx
 |   |-- types/
-|       |-- category.type.ts
-|       |-- product.type.ts
 ```

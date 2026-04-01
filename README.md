@@ -12,6 +12,9 @@ Frontend web application built with React, TypeScript, Vite, Tailwind CSS, and T
 - React Router
 - Axios
 - shadcn/ui components
+- Resend
+- Anime.JS
+- GSAP
 
 ## Prerequisites
 

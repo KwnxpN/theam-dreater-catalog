@@ -18,7 +18,7 @@ Frontend web application built with React, TypeScript, Vite, Tailwind CSS, and T
 
 ## Prerequisites
 
-- Node.js 18+ (recommended: latest LTS)
+- Node.js 22+ (recommended: latest LTS)
 - pnpm
 
 If you do not have pnpm installed:
